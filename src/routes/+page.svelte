@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as d3 from 'd3';
+	import { onMount } from 'svelte';
 
 	let myName = 'Matt';
 	let width = 300;
@@ -40,13 +41,21 @@
 		console.log('Changing doubleWidth to ', doubleWidth);
 	}
 
+	let mounted = false;
+
+	onMount(() => {
+		mounted = true;
+	});
+
 	$: {
 		console.log('Changing chosenColorIndex to ', chosenColorIndex);
-		d3.select('#mySvg')
-			.selectAll('circle')
-			.data(myData)
-			.transition()
-			.style('fill', (d) => d.colors[chosenColorIndex]);
+		if (mounted) {
+			d3.select('#mySvg')
+				.selectAll('circle')
+				.data(myData)
+				.transition()
+				.style('fill', (d) => d.colors[chosenColorIndex]);
+		}
 	}
 </script>
 
